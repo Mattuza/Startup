@@ -1,0 +1,70 @@
+    void cadastra_empresa()
+{
+        system("cls");
+        int tamanho = 0;
+        arquivo_principal = fopen("empresas.dat", "r");
+        rewind (arquivo_principal);
+        do
+        {
+          fread(&empresas, sizeof(empresas), 1, arquivo_principal);
+          tamanho++;
+        } while (!feof(arquivo_principal));
+        fseek (arquivo_principal, sizeof(empresas), tamanho);
+        do
+        {
+            system("cls");
+            cout << "\nDigite a ID da empresa:";
+            cin >> empresas.id_empresa;
+            cout << "\nDigite o nome da empresa:";
+            getline(cin, empresas.nm_empresa);
+
+            tamanho = tamanho + fwrite(&empresas, sizeof(struct dados_empresa), 1, arquivo_principal);
+
+            cout << "\nRealizar novo cadastro?  <s> ou <n>:";
+            cin >> opchar;
+            opchar = toupper(opchar);
+
+        } while (opchar != 'S');
+
+        fclose(arquivo_principal);
+}
+
+void consulta_id_empresa()
+{
+    char procura_id_empresa[20];
+    int achou;
+        cont = 0;
+    system("cls");
+    
+    arquivo_principal = fopen("empresas.dat", "r+");
+    fseek(arquivo_principal, sizeof(struct  dados_empresa), 0);
+    cout << "Digite a ID da empresa:";
+    cin >> procura_id_empresa;
+    while (fread(&empresas, sizeof(empresas), 1, arquivo_principal) == 1)
+    {
+        achou = strcmp(em.id_empresa, procura_id_empresa);
+        if (achou == 0)
+        {
+            template_empresa();
+            cout << "\nPressione qualquer tecla para voltar ao menu inicial";
+            getchar();
+            cont = 1;
+        
+        
+        }
+    }
+
+
+if (cont == 0)
+{
+    cout <<"ID nao cadastrada\n";
+    cout << "\nRealizar novo cadastro?  <s> ou <n>:";
+    cin >> (arquivo_principal);
+    arquivo_principal = toupper (arquivo_principal);
+    if (arquivo_principal != 'S')
+    {
+        cadastra_empresa();
+        getchar();
+
+    }
+}    }
